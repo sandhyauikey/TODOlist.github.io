@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List App</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  #app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .task {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  .completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+  button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <h1>To-Do List</h1>
+  <input type="text" id="taskInput" placeholder="Enter a new task">
+  <button id="addTask">Add Task</button>
+  <ul id="taskList"></ul>
+  <div>
+    <button id="showAll">Show All</button>
+    <button id="showPending">Show Pending</button>
+    <button id="showCompleted">Show Completed</button>
+    <button id="clearAll">Clear All</button>
+  </div>
+</div>
+<script>
+  const taskInput = document.getElementById("taskInput");
+  const addTaskButton = document.getElementById("addTask");
+  const taskList = document.getElementById("taskList");
+  const showAllButton = document.getElementById("showAll");
+  const showPendingButton = document.getElementById("showPending");
+  const showCompletedButton = document.getElementById("showCompleted");
+  const clearAllButton = document.getElementById("clearAll");
+
+  addTaskButton.addEventListener("click", () => {
+    const taskText = taskInput.value.trim();
+    if (taskText !== "") {
+      const li = document.createElement("li");
+      const taskSpan = document.createElement("span");
+      taskSpan.textContent = taskText;
+      taskSpan.classList.add("task");
+      li.appendChild(taskSpan);
+      const completeButton = document.createElement("button");
+      completeButton.textContent = "Complete";
+      completeButton.addEventListener("click", () => {
+        taskSpan.classList.toggle("completed");
+      });
+      li.appendChild(completeButton);
+      taskList.appendChild(li);
+      taskInput.value = "";
+    }
+  });
+
+  showAllButton.addEventListener("click", () => {
+    const tasks = taskList.querySelectorAll(".task");
+    tasks.forEach(task => {
+      task.closest("li").style.display = "flex";
+    });
+  });
+
+  showPendingButton.addEventListener("click", () => {
+    const tasks = taskList.querySelectorAll(".task");
+    tasks.forEach(task => {
+      task.closest("li").style.display = task.classList.contains("completed") ? "none" : "flex";
+    });
+  });
+
+  showCompletedButton.addEventListener("click", () => {
+    const tasks = taskList.querySelectorAll(".task");
+    tasks.forEach(task => {
+      task.closest("li").style.display = task.classList.contains("completed") ? "flex" : "none";
+    });
+  });
+
+  clearAllButton.addEventListener("click", () => {
+    taskList.innerHTML = "";
+  });
+</script>
+</body>
+</html>
